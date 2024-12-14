@@ -1,0 +1,21 @@
+﻿@page "/test"
+
+@using BlazorApp4.Models
+@using BlazorApp4.Services
+<h3>Test</h3>
+@inject ProductService ps
+
+<p>@ps.ProductList.Count()</p>
+
+@code {
+    protected override void OnInitialized()
+    {
+        ps.ProductList.Add( new Product { 
+            Id= ps.ProductList.Max(px=>px.Id) + 1 ,
+            Name="test",
+            Price=11.00,
+            Amount=22
+        });
+    }
+
+}

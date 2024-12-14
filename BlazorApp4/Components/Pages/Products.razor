@@ -1,0 +1,142 @@
+﻿@page "/products"
+@inject ProductService ps
+
+<h3>Products</h3>
+
+<p>@ps.ProductList.Count()</p>
+
+
+<EditForm Model="@product" OnValidSubmit="Submit" FormName="ProductForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary/>
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <InputText class="form-control" @bind-Value="product.Name" />
+        <ValidationMessage For="@(()=>product.Name)" />
+    </div>
+
+    <div class="form-group">
+        <label for="name">Price:</label>
+        <InputNumber class="form-control" @bind-Value="product.Price" />
+        <ValidationMessage For="@(()=>product.Price)" />
+    </div>
+
+    <div class="form-group">
+        <label for="name">Amount:</label>
+        <InputNumber class="form-control" @bind-Value="product.Amount" />
+        <ValidationMessage For="@(()=>product.Amount)" />
+    </div>
+
+    <div class="form-group">
+        <label for="name">Category:</label>
+
+        <InputSelect class="form-control" @bind-Value="product.Category" >
+            <option disabled selected>--Please Selected--</option>
+            @foreach (var cate in Enum.GetValues<SD.Category>())
+            {
+                <option value="@cate"> @cate </option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(()=>product.Category)" />
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Submit</button> 
+
+</EditForm>
+
+@if (ps.ProductList.Count() > 0)
+{ 
+
+    <table class="table mt-5">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th aria-label="Temperature in Celsius">Name</th>
+                <th aria-label="Temperature in Farenheit">Price</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in ps.ProductList.OrderByDescending(px => px.Id))
+            {
+                <tr>
+                    <td>@p.Id</td>
+                    <td>@p.Name</td>
+                    <td>@p.Price.ToString(".00")</td>
+                    <td>@p.Amount</td>
+                    <td>@p.Category</td>
+                    <td>
+                        <button class="btn btn-danger" @onclick="()=>Delete(p.Id)">Delete</button>
+                        <button class="btn btn-success" @onclick="()=>Edit(p.Id)">Edit</button>
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td>Max</td>
+                <td></td>
+                <td>@ps.ProductList.Max(px => px.Price).ToString(".00")</td>
+                <td>@ps.ProductList.Max(px => px.Amount)</td>
+            </tr>
+
+            <tr>
+                <td>Average</td>
+                <td></td>
+                <td>@ps.ProductList.Average(px => px.Price).ToString(".00")</td>
+                <td>@ps.ProductList.Average(px => px.Amount).ToString(".00")</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+}
+
+@code {
+    // private ProductService ps;
+
+    [SupplyParameterFromForm(Name = "ProductForm")]
+    private Product product { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        //  ps = new();
+    }
+
+    public void Submit()
+    {
+        if (product.Id == 0)
+            ps.Add(product);
+        else
+            ps.Edit(product);
+
+        product = new();
+    }
+
+    public void Delete(int id)
+    {
+        ps.Delete(id);
+    }
+
+    public void Edit(int id)
+    {
+         var p = ps.FindbyId(id);
+         
+        if (p != null) { 
+
+            product = new()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Amount = p.Amount,
+                    Category = p.Category,
+                };
+        
+        }
+    }
+
+}
