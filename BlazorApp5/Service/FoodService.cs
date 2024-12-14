@@ -14,18 +14,19 @@ namespace BlazorApp5.Service
             GenData();
         }
 
-        public void GenData(int number=5)
+        public void GenData(int number = 5)
         {
-            number = r.Next(20,31);
+            number = r.Next(20, 31);
 
-            for (int i = 1; i <= number; i++) {
-                Foods.Add(new Food 
+            for (int i = 1; i <= number; i++)
+            {
+                Foods.Add(new Food
                 {
                     Id = i,
-                    Name = "Food"+i,
-                    Cost = r.Next(30,501) + r.NextDouble(),
-                    Type= r.Next(1,6),
-                    Cal= r.Next(30, 201) + r.NextDouble(),
+                    Name = "Food" + i,
+                    Cost = r.Next(30, 501) + r.NextDouble(),
+                    Type = r.Next(1, 6),
+                    Cal = r.Next(30, 201) + r.NextDouble(),
                 });
             }
 
@@ -37,24 +38,24 @@ namespace BlazorApp5.Service
             throw new NotImplementedException();
         }
 
-        public List<IGrouping<int,Food>> GroupByType()
+        public List<IGrouping<int, Food>> GroupByType()
         {
-          return Foods.OrderBy(px=>px.Type)
-                .GroupBy(x => x.Type).ToList();
+            return Foods.OrderBy(px => px.Type)
+                  .GroupBy(x => x.Type).ToList();
         }
 
         public void Add(Food food)
         {
             var id = Foods.Max(x => x.Id) + 1;
-           
+
             food.Id = id;
-            Foods.Add (food);
+            Foods.Add(food);
         }
 
         public void Delete(int id)
         {
-            var result = Foods.Find (x => x.Id == id);
-            if (result != null) Foods.Remove (result);
+            var result = Foods.Find(x => x.Id == id);
+            if (result != null) Foods.Remove(result);
         }
 
         public void Edit(Food food)
@@ -70,6 +71,12 @@ namespace BlazorApp5.Service
                 Foods.Insert(index, food);
             }
 
+        }
+
+        public Food FindbyId(int id)
+        {
+            var food = Foods.FirstOrDefault(px => px.Id.Equals(id));
+            return food;
         }
 
     }

@@ -8,6 +8,7 @@
         void Delete(int id);
         void Add(Food food);
         void Edit(Food product);
-    
+
+        Food FindbyId(int id);
     }
 }
