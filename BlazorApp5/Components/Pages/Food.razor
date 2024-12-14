@@ -37,7 +37,7 @@
     @foreach (var topping in Enum.GetValues<SD.Topping>())
     {
         <div>
-            <input type="checkbox" value="@topping" @onchange="(e) => ToggleCategory(topping, e.Value)" />
+            <input type="checkbox" checked=@food.Topping.Contains(topping)  value="@topping" @onchange="(e) => ToggleCategory(topping, e.Value)" />
             <label>@topping</label>
         </div>
     }
