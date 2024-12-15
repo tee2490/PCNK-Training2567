@@ -10,7 +10,7 @@ else
 {
     @foreach (var th in theas.Theatres)
     {
-        <br/>
+        <br />
         <h4>Theatre : No @(++RoomNo). Ticket : @th.Count()</h4>
         <table class="table">
             <thead>
@@ -43,6 +43,16 @@ else
             </tbody>
 
         </table>
+
+        <p>Count number of Male = @th.Count(px => px.Gentle.Equals(SD.Sex.M)) </p>
+        <p>Count number of Female = @th.Count(px => px.Gentle.Equals(SD.Sex.F)) </p>
+        <p>Count number of member = @th.Count(px => px.MemberType.Equals(SD.TypeM.member)) </p>
+        <p>Count number of general = @th.Count(px => px.MemberType.Equals(SD.TypeM.general)) </p>
+        <p>Average of Age = @th.Average(px => px.Age).ToString("##.00") </p>
+        <p>Max Month : @theas.MaxMinMonth(th).maxMonth.Key value = @theas.MaxMinMonth(th).maxMonth.Value</p>
+        <p>Min Month : @theas.MaxMinMonth(th).minMonth.Key value = @theas.MaxMinMonth(th).minMonth.Value</p>
+
+
     }
 }
 

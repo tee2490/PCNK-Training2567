@@ -26,6 +26,16 @@
 
         public double Net => Price - Discount();
 
-   
+
     }
+    public class ReportByQuarter
+    {
+        public string MonthRange { get; set; }
+        public double SumNet { get; set; }
+        public double CountMember { get; set; }
+        public double CountGeneral { get; set; }
+        public double CountAll => CountMember + CountGeneral;
+    }
+
+
 }
