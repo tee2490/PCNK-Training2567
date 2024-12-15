@@ -74,10 +74,10 @@ namespace BlazorApp6.Services
                 };
 
 
-                foreach (var ticket in Theatres)
+                foreach (var th in Theatres)
                 {
 
-                    var t = ticket.Where(ticket => ticket.Month >= start && ticket.Month <= stop).ToList();
+                    var t = th.Where(ticket => ticket.Month >= start && ticket.Month <= stop).ToList();
 
                     if (t.Any())
                     {

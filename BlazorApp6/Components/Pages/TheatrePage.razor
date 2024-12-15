@@ -56,6 +56,43 @@ else
     }
 }
 
+<div class="w-100 p-3" style="background-color: #eee;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>MonthRange</th>
+                <th>SumNet</th>
+                <th>CountMember</th>
+                <th>CountGeneral</th>
+                <th>CountAll</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in theas.ReportByQuarters)
+            {
+                <tr>
+                    <td>@r.MonthRange</td>
+                    <td>@r.SumNet</td>
+                    <td>@r.CountMember</td>
+                    <td>@r.CountGeneral</td>
+                    <td>@r.CountAll</td>
+                </tr>
+
+            }
+            <tr class="bg-warning">
+                <th>Sum All</th>
+                <th>@theas.ReportByQuarters.Sum(px => px.SumNet)</th>
+                <th>@theas.ReportByQuarters.Sum(px => px.CountMember)</th>
+                <th>@theas.ReportByQuarters.Sum(px => px.CountGeneral)</th>
+                <th>@theas.ReportByQuarters.Sum(px => px.CountAll)</th>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+
+
 @code {
     private int RoomNo;
 
