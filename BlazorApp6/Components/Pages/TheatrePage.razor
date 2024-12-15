@@ -1,0 +1,57 @@
+﻿@page "/theatre"
+@inject TheatreService theas
+<h3>TheatrePage @theas.Theatres.Count()</h3>
+
+@if (theas == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var th in theas.Theatres)
+    {
+        <br/>
+        <h4>Theatre : No @(++RoomNo). Ticket : @th.Count()</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Type</th>
+                    <th>Month</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Net</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in th)
+                {
+                    <tr>
+                        <td>@t.Id</td>
+                        <td>@t.Gentle</td>
+                        <td>@t.Age</td>
+                        <td>@t.MemberType</td>
+                        <td>@t.Month</td>
+                        <td>@t.Price</td>
+                        <td>@t.Discount()</td>
+                        <td>@t.Net</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+}
+
+@code {
+    private int RoomNo;
+
+    protected override void OnInitialized()
+    {
+        RoomNo = 0;
+    }
+
+}
