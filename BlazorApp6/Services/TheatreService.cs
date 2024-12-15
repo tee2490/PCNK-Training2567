@@ -14,6 +14,7 @@ namespace BlazorApp6.Services
             r = new Random();
             Theatres = new();
             CreateTheatre();
+            Report();
         }
 
         public void CreateTheatre() //หลายโรง

@@ -14,7 +14,7 @@ namespace BlazorApp5.Model
 
         [Required(ErrorMessage = "กรุณากรอกข้อมูล")]
         [Range(1, 5)]
-        public int Type { get; set; }
+        public SD.Types Type { get; set; }
 
         [Required(ErrorMessage = "กรุณากรอกข้อมูล")]
         [Range(30.00, 200.99)]

@@ -15,10 +15,32 @@
         <ValidationMessage For="@(()=>food.Name)" />
     </div>
 
-    <div class="form-group">
+    @*     <div class="form-group">
         <label for="name">Type:</label>
         <InputNumber class="form-control" @bind-Value="food.Type" />
         <ValidationMessage For="@(()=>food.Type)" />
+    </div> *@
+
+    <div class="form-group d-flex my-2">
+        
+        <label for="name">Type:</label>
+       
+            <InputRadioGroup @bind-Value="food.Type"> 
+                
+                @foreach (var type in Enum.GetValues<SD.Types>())
+                {
+                <div class="mx-2">
+                    <label>
+                        <InputRadio Value="type" />
+                        @type
+                    </label>
+                </div>
+                }
+                
+            </InputRadioGroup>
+       
+        <ValidationMessage For="@(()=>food.Type)" />
+          
     </div>
 
     <div class="form-group">
@@ -37,7 +59,7 @@
     @foreach (var topping in Enum.GetValues<SD.Topping>())
     {
         <div>
-            <input type="checkbox" checked=@food.Topping.Contains(topping)  value="@topping" @onchange="(e) => ToggleCategory(topping, e.Value)" />
+            <input type="checkbox" checked=@food.Topping.Contains(topping) value="@topping" @onchange="(e) => ToggleCategory(topping, e.Value)" />
             <label>@topping</label>
         </div>
     }
@@ -57,7 +79,7 @@
 </EditForm>
 
 
-@if (fs.Foods.Count()  == 0)
+@if (fs.Foods.Count() == 0)
 {
     <p><em>No data.</em></p>
 }
@@ -88,7 +110,7 @@ else
                     <td>@f.Cal.ToString("#,###.00")</td>
                     <td>
                         @foreach (var topping in f.Topping)
-                        { 
+                        {
                             <p>@topping</p>
 
                         }
@@ -101,7 +123,7 @@ else
                 </tr>
             }
 
-            <br/>
+            <br />
             <tr>
                 <th></th>
                 <th aria-label="Temperature in Celsius"></th>
@@ -116,7 +138,7 @@ else
                 <td></td>
                 <td></td>
                 <td>Max</td>
-                <td>@fs.Foods.Max(px=>px.Cost).ToString("#,###.00")</td>
+                <td>@fs.Foods.Max(px => px.Cost).ToString("#,###.00")</td>
                 <td>@fs.Foods.Max(px => px.Cal).ToString("#,###.00")</td>
                 <td></td>
             </tr>
@@ -144,8 +166,8 @@ else
         </tbody>
     </table>
 
-    <br/>
-    <hr/>
+    <br />
+    <hr />
 
     @foreach (var type in fs.GroupByType())
     {
@@ -235,7 +257,7 @@ else
         }
     }
 
-  
+
     private void ToggleCategory(SD.Topping topping, object? isChecked)
     {
         if (isChecked is bool checkedValue && checkedValue)

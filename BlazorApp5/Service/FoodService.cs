@@ -20,13 +20,26 @@ namespace BlazorApp5.Service
 
             for (int i = 1; i <= number; i++)
             {
+                //random Topping แถมเฉยๆ
+                var tempTopping = new List<SD.Topping>();
+                var element = Enum.GetValues<SD.Topping>().Count();
+                var n  = r.Next(1,element+1); //สุ่มจำนวนกี่ตัว
+
+                for (int j = 1; j <= n; j++) 
+                {
+                    var t = (SD.Topping)r.Next(0, element); //สุ่มค่า
+                    tempTopping.Add(t);
+                }
+
+
                 Foods.Add(new Food
                 {
                     Id = i,
                     Name = "Food" + i,
                     Cost = r.Next(30, 501) + r.NextDouble(),
-                    Type = r.Next(1, 6),
+                    Type = (SD.Types)r.Next(1, 6),
                     Cal = r.Next(30, 201) + r.NextDouble(),
+                    Topping = tempTopping.Distinct().Order().ToList()
                 });
             }
 
@@ -38,7 +51,7 @@ namespace BlazorApp5.Service
             throw new NotImplementedException();
         }
 
-        public List<IGrouping<int, Food>> GroupByType()
+        public List<IGrouping<SD.Types, Food>> GroupByType()
         {
             return Foods.OrderBy(px => px.Type)
                   .GroupBy(x => x.Type).ToList();
