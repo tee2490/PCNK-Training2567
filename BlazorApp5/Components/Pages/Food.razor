@@ -22,25 +22,25 @@
     </div> *@
 
     <div class="form-group d-flex my-2">
-        
+
         <label for="name">Type:</label>
-       
-            <InputRadioGroup @bind-Value="food.Type"> 
-                
-                @foreach (var type in Enum.GetValues<SD.Types>())
-                {
+
+        <InputRadioGroup @bind-Value="food.Type">
+
+            @foreach (var type in Enum.GetValues<SD.Types>())
+            {
                 <div class="mx-2">
                     <label>
                         <InputRadio Value="type" />
                         @type
                     </label>
                 </div>
-                }
-                
-            </InputRadioGroup>
-       
+            }
+
+        </InputRadioGroup>
+
         <ValidationMessage For="@(()=>food.Type)" />
-          
+
     </div>
 
     <div class="form-group">
@@ -86,14 +86,27 @@
 else
 {
     <button class="btn btn-dark m-4" @onclick="Add">Add new food</button>
+    <button class="btn btn-dark m-4" @onclick="()=>SortbyName()">
+        @if (sortStatus)
+        {
+            <span>มากไปน้อย</span>
+        }
+        else
+        {
+            <span>น้อยไปมาก</span>
+        }
+    </button>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th aria-label="Temperature in Celsius">Name</th>
-                <th aria-label="Temperature in Farenheit">Type</th>
-                <th aria-label="Temperature in Farenheit">Cost</th>
-                <th aria-label="Temperature in Farenheit">Call</th>
+                <th @onclick="@(() => SortbyName("Name"))" class="text-decoration-underline text-danger" aria-label="Temperature in Celsius">Name</th>
+                <th @onclick="@(() => SortbyName("Type"))" class="text-decoration-underline text-danger" aria-label="Temperature in Farenheit">Type</th>
+                <th @onclick="@(() => SortbyName("Cost"))" class="text-decoration-underline text-danger" aria-label="Temperature in Farenheit">
+                    Cost
+                </th>
+
+                <th @onclick="@(() => SortbyName("Cal"))" class="text-decoration-underline text-danger" aria-label="Temperature in Farenheit">Call</th>
                 <th aria-label="Temperature in Farenheit">Topping</th>
                 <th>Cost Rate</th>
                 <th></th>
@@ -210,6 +223,13 @@ else
     [SupplyParameterFromForm(Name = "FoodForm")]
     private Model.Food food { get; set; } = new();
 
+    private bool sortStatus = true;
+
+    void Toggle()
+    {
+        sortStatus = !sortStatus;
+    }
+
     public void Submit()
     {
         if (food.Id == 0)
@@ -271,6 +291,19 @@ else
         {
             food.Topping.Remove(topping);
         }
+    }
+
+    void SortbyName(string propertyName = "Id")
+    {
+        // string propertyName = "Cal";
+
+        if (sortStatus)
+            fs.Foods = fs.Foods
+            .OrderByDescending(px => px.GetType().GetProperty(propertyName)?.GetValue(px, null)).ToList();
+        else
+            fs.Foods = fs.Foods
+            .OrderBy(px => px.GetType().GetProperty(propertyName)?.GetValue(px, null)).ToList();
+        sortStatus = !sortStatus;
     }
 
 
