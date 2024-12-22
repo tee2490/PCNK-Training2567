@@ -96,6 +96,11 @@ else
             <span>น้อยไปมาก</span>
         }
     </button>
+
+    <InputText class="rounded" @bind-Value="keyword" placeholder="พิมพ์คำค้นหา..."/>
+    <button class="btn btn-success" @onclick="SearchByKeyword">ค้นหา</button>
+
+
     <table class="table">
         <thead>
             <tr>
@@ -222,6 +227,7 @@ else
 
     [SupplyParameterFromForm(Name = "FoodForm")]
     private Model.Food food { get; set; } = new();
+    private string keyword = string.Empty;
 
     private bool sortStatus = true;
 
@@ -307,5 +313,10 @@ else
     }
 
 
+    private void SearchByKeyword()
+    {
+       if(string.IsNullOrEmpty(keyword)) return;
 
+        fs.Foods = fs.Foods.Where(px => px.Name.ToUpper().Contains(keyword.ToUpper())).ToList();
+    }
 }
